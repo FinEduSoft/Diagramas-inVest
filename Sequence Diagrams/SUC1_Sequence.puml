@@ -1,0 +1,47 @@
+@startuml ""
+autonumber
+
+actor User
+boundary BilleteraScreen
+control BilleteraController
+entity Billetera
+entity Transaccion
+
+User -> BilleteraScreen : ingresarMontoYDivisa(monto, divisa)
+activate BilleteraScreen
+
+BilleteraScreen -> BilleteraController : registrarMovimiento(billeteraId, monto, divisa)
+activate BilleteraController
+
+BilleteraController -> Billetera : obtenerDivisaBase(billeteraId)
+activate Billetera
+Billetera --> BilleteraController : divisaBase
+deactivate Billetera
+
+alt divisa != divisaBase
+    BilleteraController -> BilleteraController : calcularConversion(monto, divisa, divisaBase)
+end
+
+BilleteraController -> Transaccion : crearTransaccion(montoConvertido, divisaBase, tipoMovimiento)
+activate Transaccion
+Transaccion --> BilleteraController : objetoTransaccion
+deactivate Transaccion
+
+alt tipoMovimiento == "Gasto"
+    BilleteraController -> Billetera : descontarSaldo(montoConvertido)
+else tipoMovimiento == "Ingreso"
+    BilleteraController -> Billetera : aumentarSaldo(montoConvertido)
+end
+
+activate Billetera
+Billetera -> Billetera : actualizarSaldoInterno()
+Billetera --> BilleteraController : confirmacionSaldo
+deactivate Billetera
+
+BilleteraController --> BilleteraScreen : mostrarExito("Movimiento registrado y saldo actualizado.")
+deactivate BilleteraController
+
+BilleteraScreen --> User : renderizarNuevoBalance()
+deactivate BilleteraScreen
+
+@enduml

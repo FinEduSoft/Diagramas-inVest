@@ -1,0 +1,106 @@
+@startuml "Diagrama Conceptual - inVest"
+
+title "Diagrama Conceptual - inVest"
+
+package "inVest - Modelo de Dominio MVP" {
+    class Usuario {
+        id
+        nombre
+        email
+        contraseña
+        rachaDias
+        puntosTotales
+    }
+    class Billetera {
+        id
+        nombre
+        saldoActual
+        divisa
+    }
+    class Gasto {
+        id
+        monto
+        fecha
+        descripcion
+    }
+    class Ingreso {
+        id
+        monto
+        fecha
+        descripcion
+    }
+    class Categoria {
+        id
+        nombre
+    }
+    class MetaAhorro {
+        id
+        titulo
+        montoObjetivo
+        montoActual
+        fechaLimite
+    }
+    class Curso {
+        id
+        titulo
+        descripcion
+    }
+    class Modulo {
+        id
+        titulo
+    }
+    class Progreso {
+        id
+        porcentaje
+        completado
+    }
+    class Medalla {
+        id
+        nombre
+        requisito
+        imagen
+    }
+    class Recomendacion {
+        id
+        descripcion
+        tipoAlerta
+        fechaEmision
+    }
+    class Portafolio {
+        id
+        saldoInvertido
+    }
+    class Activo {
+        id
+        simbolo
+        nombre
+        precioActual
+    }
+    class Transaccion {
+        id
+        tipoOperacion
+        cantidad
+        precio
+        fecha
+    }
+}
+
+Usuario "1" -- "1..*" Billetera : Posee
+Billetera "1" -- "0..*" Gasto : Registra
+Billetera "1" -- "0..*" Ingreso : Registra
+Gasto "*" -- "1" Categoria : Pertenece a
+Ingreso "*" -- "1" Categoria : Pertenece a
+
+Usuario "1" -- "0..*" MetaAhorro : Crea
+Usuario "1" -- "0..*" Recomendacion : Recibe
+
+Usuario "1" -- "0..*" Progreso : Monitorea
+Curso "1" -- "0..*" Progreso : Incluye
+Curso "1" -- "1..*" Modulo : Contiene
+Usuario "1" -- "0..*" Medalla : Desbloquea
+
+Usuario "1" -- "1" Portafolio : Opera
+Portafolio "1" -- "0..*" Transaccion : Registra
+Transaccion "*" -- "1" Activo : Involucra
+
+@enduml

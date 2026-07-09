@@ -1,0 +1,36 @@
+@startuml "Business Use Cases Diagram: inVest"
+left to right direction
+
+actor/ "Usuario" <<Business Actor>> as Usuario
+actor/ "Administrador" <<Business Worker>> as Admin
+
+usecase/ "Gestionar Flujo de Caja \n y Billeteras Multi-moneda" as BUC1
+usecase/ "Planificar Metas de Ahorro" as BUC2
+usecase/ "Impartir Educación Financiera \n Gamificada" as BUC3
+usecase/ "Evaluar Hábitos Financieros" as BUC4
+usecase/ "Generar Recomendaciones \n Personalizadas" as BUC5
+usecase/ "Simular Inversiones Educativas \n (Paper Trading)" as BUC6
+
+Admin --> BUC3
+Admin --> BUC6
+
+Usuario --> BUC1
+Usuario --> BUC2
+Usuario --> BUC3
+Usuario --> BUC4
+Usuario --> BUC6
+
+BUC4 ..> BUC5 : <<include>>
+
+skinparam usecase {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam actor {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam Arrow {
+  Color #7A1631
+}
+@enduml

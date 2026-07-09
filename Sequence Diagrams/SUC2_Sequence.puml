@@ -1,0 +1,42 @@
+@startuml ""
+autonumber
+
+actor User
+boundary MetaScreen
+control MetaController
+entity Billetera
+entity MetaAhorro
+
+User -> MetaScreen : ingresarAporte(metaId, monto, billeteraId)
+activate MetaScreen
+
+MetaScreen -> MetaController : procesarAporte(metaId, monto, billeteraId)
+activate MetaController
+
+MetaController -> Billetera : verificarSaldo(billeteraId, monto)
+activate Billetera
+Billetera --> MetaController : True | False
+deactivate Billetera
+
+alt True
+    MetaController -> Billetera : debitarMonto(monto)
+    activate Billetera
+    Billetera --> MetaController : confirmacionDebito
+    deactivate Billetera
+
+    MetaController -> MetaAhorro : acumularMonto(monto)
+    activate MetaAhorro
+    MetaAhorro -> MetaAhorro : nuevoPorcentaje = (montoActual * 100) / montoObjetivo
+    MetaAhorro --> MetaController: nuevoPorcentaje
+    deactivate MetaAhorro
+
+    MetaController --> MetaScreen : mostrarExito("Abono procesado correctamente.", nuevoPorcentaje)
+else False
+    MetaController --> MetaScreen : mostrarError("Saldo insuficiente en billetera.")
+end
+deactivate MetaController
+
+MetaScreen --> User : renderizarBarraProgreso(nuevoPorcentaje)
+deactivate MetaScreen
+
+@enduml

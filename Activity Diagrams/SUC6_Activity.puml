@@ -1,0 +1,39 @@
+@startuml
+title SUC06 - Simular Inversiones Educativas
+
+start
+
+partition Administrador {
+
+:Actualizar precios del mercado;
+:Actualizar activos disponibles;
+
+}
+
+partition Usuario {
+
+:Visualizar cotizaciones;
+
+:Filtrar activos por nivel de riesgo;
+
+:Seleccionar activo;
+
+:Ingresar orden de compra/venta;
+
+if (¿Saldo virtual suficiente?) then (Sí)
+
+    :Ejecutar simulación;
+    :Actualizar portafolio virtual;
+    :Visualizar ganancias o pérdidas;
+    stop
+
+else (No)
+
+    :Cancelar operación;
+    stop
+
+endif
+
+}
+
+@enduml

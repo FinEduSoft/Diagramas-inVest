@@ -1,0 +1,38 @@
+@startuml ""
+autonumber
+
+actor User
+boundary EvaluacionScreen
+control CursoController
+entity Progreso
+entity Insignia
+
+User -> EvaluacionScreen : enviarRespuestas(evaluacionId, listaRespuestas)
+activate EvaluacionScreen
+
+EvaluacionScreen -> CursoController : calificarEvaluacion(usuarioId, evaluacionId, listaRespuestas)
+activate CursoController
+
+CursoController -> CursoController : calcularPuntaje(listaRespuestas)
+
+alt puntaje >= 10.5
+    CursoController -> Progreso : registrarModuloAprobado(usuarioId, evaluacionId)
+    activate Progreso
+    Progreso --> CursoController : confirmacionProgreso
+    deactivate Progreso
+
+    CursoController -> Insignia : asignarInsignia(usuarioId, evaluacionId)
+    activate Insignia
+    Insignia --> CursoController : objetoMedalla
+    deactivate Insignia
+
+    CursoController --> EvaluacionScreen : mostrarResultadoAprobado("¡Felicitaciones! Has aprobado.", objetoMedalla)
+else puntaje < 10.5
+    CursoController --> EvaluacionScreen : mostrarResultadoReprobado("Mala suerte... inténtelo de nuevo.")
+end
+deactivate CursoController
+
+EvaluacionScreen --> User : animacionDesbloqueoMedalla(objMedalla)
+deactivate EvaluacionScreen
+
+@enduml

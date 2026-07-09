@@ -1,0 +1,29 @@
+@startuml ""
+autonumber
+
+actor User
+boundary SaludFinancieraScreen
+control RecomendacionController
+entity Recomendacion
+
+User -> SaludFinancieraScreen : solicitarSaludFinancieros()
+activate SaludFinancieraScreen
+
+SaludFinancieraScreen -> RecomendacionController : obtenerDatos(usuarioId)
+activate RecomendacionController
+
+RecomendacionController -> RecomendacionController : realizarAnalisis(usuarioId)
+
+RecomendacionController -> Recomendacion : generarSugerenciasYAlertas(datosAnalisis)
+activate Recomendacion
+Recomendacion -> Recomendacion : construirAlertasGastosHormiga()
+Recomendacion --> RecomendacionController : listaRecomendaciones
+deactivate Recomendacion
+
+RecomendacionController --> SaludFinancieraScreen : enviarPanelConsolidado(listaRecomendaciones)
+deactivate RecomendacionController
+
+SaludFinancieraScreen --> User : desplegarSugerenciasAutomaticas()
+deactivate SaludFinancieraScreen
+
+@enduml

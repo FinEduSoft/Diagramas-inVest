@@ -1,0 +1,43 @@
+@startuml ""
+autonumber
+
+actor User
+boundary SimuladorScreen
+control SimuladorController
+entity Cuenta
+entity Portafolio
+
+User -> SimuladorScreen : ejecutarOrdenCompra(activoId, cantidad)
+activate SimuladorScreen
+
+SimuladorScreen -> SimuladorController : procesarCompraFicticia(usuarioId, activoId, cantidad)
+activate SimuladorController
+
+SimuladorController -> Cuenta : verificarSaldoSimulado(usuarioId)
+activate Cuenta
+Cuenta --> SimuladorController : saldoFicticioDisponible
+deactivate Cuenta
+
+SimuladorController -> SimuladorController : calcularCostoTotal(activoId, cantidad)
+
+alt saldoFicticioDisponible >= costoTotal
+    SimuladorController -> Cuenta : debitarSaldoSimulado(costoTotal)
+    activate Cuenta
+    Cuenta --> SimuladorController : confirmacionDebito
+    deactivate Cuenta
+
+    SimuladorController -> Portafolio : registrarActivo(usuarioId, activoId, cantidad)
+    activate Portafolio
+    Portafolio --> SimuladorController : confirmacionPortafolio
+    deactivate Portafolio
+
+    SimuladorController --> SimuladorScreen : mostrarExitoCompra("Compra simulada con éxito.")
+else saldoFicticioDisponible < costoTotal
+    SimuladorController --> SimuladorScreen : mostrarErrorCompra("Fondos simulados insuficientes.")
+end
+deactivate SimuladorController
+
+SimuladorScreen --> User : actualizarDashboardPortafolio()
+deactivate SimuladorScreen
+
+@enduml

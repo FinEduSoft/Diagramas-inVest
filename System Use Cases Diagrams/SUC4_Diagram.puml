@@ -1,0 +1,32 @@
+@startuml "SUC4: Sistema Hábitos"
+left to right direction
+
+skinparam usecase {
+  BackgroundColor #FFF9C4
+  BorderColor #7A1631
+  StereotypeFontColor #2E7D32
+}
+skinparam actor {
+  BackgroundColor #FFF9C4
+  BorderColor #7A1631
+  StereotypeFontColor #2E7D32
+}
+skinparam Arrow {
+  Color #7A1631
+}
+
+actor "Usuario" as User
+actor "Administrador" as Admin
+
+rectangle "inVest - Sistema de Diagnóstico" {
+    usecase "Responder Cuestionario de Hábitos Financieros" as UC1
+    usecase "Calcular Nivel de Consciencia Financiera" as UC2
+    usecase "Visualizar Reporte Estadistico Agregado" as UC3
+}
+
+UC1 ..> UC2 : <<include>>
+
+User --> UC1
+Admin --> UC3
+
+@enduml

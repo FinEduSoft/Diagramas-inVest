@@ -1,0 +1,34 @@
+@startuml ""
+autonumber
+
+actor User
+boundary TestHabitosScreen
+control HabitosController
+entity HistorialRespuestas
+entity PerfilUsuario
+
+User -> TestHabitosScreen : enviarRespuestas(listaRespuestas)
+activate TestHabitosScreen
+
+TestHabitosScreen -> HabitosController : procesarCuestionario(usuarioId, listaRespuestas)
+activate HabitosController
+
+HabitosController -> HistorialRespuestas : guardarRespuestas(usuarioId, listaRespuestas)
+activate HistorialRespuestas
+HistorialRespuestas --> HabitosController : confirmacionGuardado
+deactivate HistorialRespuestas
+
+HabitosController -> HabitosController : calcularPuntaje(listaRespuestas)
+
+HabitosController -> PerfilUsuario : actualizarNivelConsciencia(usuarioId, puntajeCalculado)
+activate PerfilUsuario
+PerfilUsuario --> HabitosController : confirmacionPerfil
+deactivate PerfilUsuario
+
+HabitosController -> TestHabitosScreen : mostrarResultados(puntajeCalculado)
+deactivate HabitosController
+
+TestHabitosScreen -> User : renderizarResultados()
+deactivate TestHabitosScreen
+
+@enduml

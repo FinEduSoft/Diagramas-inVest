@@ -1,0 +1,21 @@
+@startuml "BUC2"
+left to right direction
+
+actor/ "Usuario" <<Business Actor>> as Usuario
+
+usecase/ "Planificar Metas de Ahorro" as BUC2
+
+Usuario --> BUC2
+
+skinparam usecase {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam actor {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam Arrow {
+  Color #7A1631
+}
+@enduml

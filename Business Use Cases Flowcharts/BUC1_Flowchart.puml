@@ -1,0 +1,23 @@
+@startuml "Flux: BUC1 - Flujo de Caja"
+|Usuario (Business Actor)|
+start
+:Decide organizar sus finanzas;
+if (¿Desea una nueva billetera?) then (Sí)
+  :Definir nombre de billetera\ny seleccionar tipo de divisa (USD/PEN);
+  |Sistema / Negocio|
+  :Crear billetera independiente y\nconfigurar tasa de cambio base;
+else (No)
+  |Usuario (Business Actor)|
+  :Seleccionar billetera existente;
+endif
+
+|Usuario (Business Actor)|
+:Registrar monto del movimiento\n(Ingreso o Gasto);
+:Seleccionar categoría del flujo\n(Alimentación, Estudios, etc.);
+
+|Sistema / Negocio|
+:Validar consistencia del saldo;
+:Persistir la transacción en la billetera;
+:Actualizar el Balance Consolidado\ndel usuario;
+stop
+@enduml

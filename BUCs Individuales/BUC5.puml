@@ -1,0 +1,21 @@
+@startuml "BUC5"
+left to right direction
+
+actor/ "Usuario" <<Business Actor>> as Usuario
+
+usecase/ "Generar Recomendaciones Personalizadas" as BUC5
+
+BUC5 -> Usuario : <<retroalimentar>>
+
+skinparam usecase {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam actor {
+  BackgroundColor #C7F4FF
+  BorderColor #7A1631
+}
+skinparam Arrow {
+  Color #7A1631
+}
+@enduml
