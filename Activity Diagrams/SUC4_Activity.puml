@@ -1,34 +1,30 @@
 @startuml
 title SUC04 - Evaluar Hábitos Financieros
 
+|Usuario|
+
 start
 
-partition Usuario {
+:Responder cuestionario de hábitos financieros;
 
-:Responder cuestionario;
+if (¿Cuestionario completo?) then (Sí)
 
-if (¿Preguntas completas?) then (Sí)
+:Entregar cuestionario;
 
-    :Calcular puntaje;
-    :Asignar nivel de consciencia financiera;
+|Administrador|
+
+:Evaluar respuestas;
+:Determinar nivel de consciencia financiera;
+:Analizar los resultados generales de los usuarios;
+
+stop
 
 else (No)
 
-    :Interrumpir guardado;
-    :Resaltar preguntas faltantes;
-    :Solicitar completar cuestionario;
-    stop
-
-endif
-
-}
-
-partition Administrador {
-
-:Visualizar reporte estadístico anónimo;
-
-}
+:Completar las preguntas pendientes;
 
 stop
+
+endif
 
 @enduml
