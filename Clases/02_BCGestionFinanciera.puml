@@ -1,0 +1,75 @@
+@startuml BCGestionFinanciera
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCGestionFinanciera" {
+
+    package "AgregadoFinanciero" {
+
+        class RegistroFinanciero <<RaizAgregado>> {
+            - UsuarioId usuarioId
+            - LocalDate periodo
+            - Dinero totalIngresos
+            - Dinero totalEgresos
+            - Dinero saldo
+        }
+
+        entity Transaccion <<Entidad>> {
+            - TransaccionId id
+            - UsuarioId usuarioId
+            - TipoTransaccion tipo
+            - Dinero monto
+            - String descripcion
+            - LocalDate fecha
+            - CategoriaId categoriaId
+        }
+
+        class TipoTransaccion <<ObjetoValor>> {
+            - String valor
+            ' INGRESO | EGRESO
+        }
+
+        entity Categoria <<Entidad>> {
+            - CategoriaId id
+            - String nombre
+            - String color
+        }
+
+        class CategoriaId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        entity Meta <<Entidad>> {
+            - MetaId id
+            - UsuarioId usuarioId
+            - String nombre
+            - Dinero montoObjetivo
+            - Dinero montoActual
+            - LocalDate fechaLimite
+        }
+
+        class MetaId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class IndicadorClave <<ObjetoValor>> {
+            - Dinero tasaAhorro
+            - Dinero ratioGastos
+            - Dinero saldoProyectado
+        }
+    }
+
+    RegistroFinanciero "1" *-- "1..*" Transaccion : contiene
+    RegistroFinanciero "1" *-- "1" IndicadorClave : calcula
+    RegistroFinanciero "1" *-- "0..*" Meta : define
+    Transaccion *-- TipoTransaccion
+    Transaccion *-- CategoriaId
+    Categoria ..> CategoriaId : identificado por
+    Meta *-- MetaId
+}
+
+@enduml

@@ -1,0 +1,34 @@
+@startuml "Containers"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title inVest - Diagrama de Contenedores
+Person(admin, "Administrador de Curso", "Persona a cargo de actualizar los contenidos de los cursos")
+Person(student, "Usuario", "Persona que usa el sistema de gestión de ingresos y cursos")
+System_Ext(sendgrid, "SendGrid", "Servicio de envío de correos electrónicos")
+System_Ext(pago, "Pasarela de Pago", "Servicio de procesamiento de pagos en línea")
+System_Ext(capcha, "Google reCAPTCHA", "Servicio de protección contra spam y abuse")
+System_Ext(repo, "Repositorio Bibliografico Externo", "Servicio de almacenamiento y acceso a recursos bibliográficos externos")
+System_Ext(autent, "Google Authentication", "Servicio de autenticación de usuarios mediante cuentas de Google")
+
+System_Boundary(system, "inVest") {
+    Container(lp, "Landing Page", "React", "Muestra información general sobre la plataforma y permite acceder a la aplicacion web")
+    Container(web, "Aplicacion Web", "React", "Permite a los usuarios acceder a la plataforma a través de un navegador web")
+    Container(spa, "Aplicacion de Página Única", "React", "Provee una experiencia de usuario fluida y rápida al cargar solo los componentes necesarios")
+    Container(api, "Aplicacion API", "Java - NodeJS", "Da conectividad entre la DB y la aplicacion web, maneja la lógica de negocio y se encarga de las integraciones con servicios externos")
+    ContainerDb(db, "Database", "PostgreSQL", "Almacena la data de los cursos y la información de los usuarios")
+}
+
+Rel(admin, lp, "Visita inVest.com mediante [HTTPS]")
+Rel(student, lp, "Visita inVest.com mediante [HTTPS]")
+Rel(lp, web, "Redirige a los usuarios a la aplicación web mediante [HTTPS]")
+Rel(admin, web, "Administra los cursos mediante [HTTPS]")
+Rel(student, web, "Accede a los cursos mediante [HTTPS]")
+Rel(web, spa, "Entrega la aplicación de página única a través de [HTTPS]")
+Rel(spa, api, "Hace llamadas a API mediante [HTTPS]")
+Rel(api, db, "Lee y escribe datos en la base de datos mediante SQL")
+Rel(api, sendgrid, "Envía notificaciones por correo electrónico mediante [HTTPS]")
+Rel(api, pago, "Procesa pagos mediante [HTTPS]")
+Rel(api, capcha, "Protege el sistema contra spam y abuso mediante [HTTPS]")
+Rel(api, repo, "Accede a recursos bibliográficos externos mediante [HTTPS]")
+Rel(api, autent, "Permite a los usuarios autenticarse mediante cuentas de Google")
+@enduml

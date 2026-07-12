@@ -1,0 +1,47 @@
+@startuml BCIdentidad
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCIdentidad" {
+
+    package "AgregadoUsuario" {
+
+        entity Usuario <<RaizAgregado>> {
+            - UsuarioId id
+            - Correo correo
+            - String hashContrasena
+            - RolUsuario rol
+            - ProveedorAutenticacion proveedor
+            - LocalDateTime creadoEn
+        }
+
+        Interface RolUsuario <<ObjetoValor>> {
+            - String valor
+            ' ADMINISTRADOR | USUARIO
+        }
+
+        Interface ProveedorAutenticacion <<ObjetoValor>> {
+            - String valor
+            ' LOCAL | GOOGLE
+        }
+
+        entity PerfilUsuario <<Entidad>> {
+            - UsuarioId usuarioId
+            - String nombre
+            - String apellido
+            - String telefono
+        }
+    }
+
+    ' Relaciones internas del Bounded Context
+    Usuario "1" *-- "1" PerfilUsuario : tiene
+    Usuario *-- RolUsuario
+    Usuario *-- ProveedorAutenticacion
+    Usuario ..> Correo : usa
+}
+
+@enduml

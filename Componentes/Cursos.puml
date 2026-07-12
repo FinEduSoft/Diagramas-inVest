@@ -1,0 +1,23 @@
+@startuml "Cursos-Components"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title inVest - Cursos Component Diagram
+
+Container(spa, "Single Page Application", "Frontend", "Permite a los usuarios visualizar módulos de educación")
+ContainerDb(db, "Database", "PostgreSQL/MySQL", "Almacena información de cursos y progreso")
+System_Ext(repo, "Repositorio Bibliográfico", "Almacena videos y PDFs")
+
+Container_Boundary(cursos_bc, "Cursos Bounded Context") {
+    Component(interfaces, "Interfaces", "React/CSS/HTML", "Proporciona la interfaz de usuario para la gestión de cursos")
+    Component(application, "Application", "Java/NodeJS", "Contiene la lógica de negocio y coordina las operaciones entre los componentes")
+    Component(domain, "Domain", "Cursos, módulos, lecciones", "Define las entidades y reglas de negocio para la gestión de cursos")
+    Component(infrastructure, "Infrastructure", "APIs, NodeJs, etc.", "Proporciona servicios de infraestructura como acceso a la base de datos y comunicación con servicios externos")
+}
+
+Rel(spa, interfaces, "")
+Rel(interfaces, application, "")
+Rel(application, domain, "")
+Rel(application, infrastructure, "")
+Rel(infrastructure, db, "")
+Rel(infrastructure, repo, "")
+@enduml

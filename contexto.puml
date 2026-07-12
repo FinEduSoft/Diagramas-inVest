@@ -1,0 +1,23 @@
+@startuml "Context"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+title inVest - Diagrama de Contexto
+
+Person(admin, "Administrador de Curso", "Persona a cargo de actualizar los contenidos de los cursos")
+Person(student, "Usuario", "Persona que usa el sistema de gestión de ingresos y cursos")
+System(system1, "Sistema inVest", "Plataforma integral para el control de gastos, ahorro y educacion financiera")
+System_Ext(sendgrid, "SendGrid", "Servicio de envío de correos electrónicos")
+System_Ext(pago, "Pasarela de Pago", "Servicio de procesamiento de pagos en línea")
+System_Ext(capcha, "Google reCAPTCHA", "Servicio de protección contra spam y abuse")
+System_Ext(repo, "Repositorio Bibliografico Externo", "Servicio de almacenamiento y acceso a recursos bibliográficos externos")
+System_Ext(autent, "Google Authentication", "Servicio de autenticación de usuarios mediante cuentas de Google")
+
+Rel(admin, system1, "Administra los cursos mediante")
+Rel(student, system1, "Accede a los cursos mediante")
+Rel(system1, sendgrid, "Envía notificaciones por correo electrónico mediante")
+
+Rel(system1, pago, "Procesa pagos mediante")
+Rel(system1, capcha, "Protege el sistema contra spam y abuso mediante")
+Rel(system1, repo, "Accede a recursos bibliográficos externos mediante")
+Rel(system1, autent, "Permite a los usuarios autenticarse mediante cuentas de Google")
+
+@enduml

@@ -1,0 +1,22 @@
+@startuml "Notificaciones-Components"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title inVest - Notificaciones Component Diagram
+
+Container(spa, "Single Page Application", "Frontend", "Permite a los usuarios registrar ingresos y gastos")
+System_Ext(Notificaciones, "SendGrid", "Servicio de procesamiento de envio de notificaciones")
+ContainerDb(db, "Database de usuarios", "PostgreSQL/MySQL", "Almacena información de usuarios ")
+Container_Boundary(notificaciones_bc, "Notificaciones Bounded Context") {
+    Component(interfaces, "Interfaces", "HTML/CSS/JS", "Proporciona la interfaz de usuario para la confirmacion de envio de notificaciones")
+    Component(application, "Application", "Java/NodeJS", "Contiene la lógica de negocio y coordina las operaciones entre los componentes")
+    Component(domain, "Domain", "Mensaje, Usuario destino, Estado, etc.", "Define las entidades y reglas de negocio para la gestión de notificaciones")
+    Component(infrastructure, "Infrastructure", "APIs, NodeJs ,etc.", "Proporciona servicios de infraestructura como acceso a la base de datos y comunicación con servicios externos")
+}
+
+Rel(spa, interfaces, "")
+Rel(interfaces, application, "")
+Rel(application, domain, "")
+Rel(application, infrastructure, "")
+Rel(infrastructure, db, "Consulta información de contacto de usuarios mediante [HTTPS]")
+Rel(infrastructure, Notificaciones, "Procesa notificaciones mediante [HTTPS]")
+@enduml

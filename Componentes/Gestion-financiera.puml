@@ -1,0 +1,21 @@
+@startuml "Gestion-Financiera-Components"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title inVest - Gestión Financiera Component Diagram
+
+Container(spa, "Single Page Application", "Frontend", "Permite a los usuarios registrar ingresos y gastos")
+ContainerDb(db, "Database", "PostgreSQL/MySQL", "Almacena transacciones, categorías y metas")
+
+Container_Boundary(gestion_bc, "Gestión Financiera Bounded Context") {
+    Component(interfaces, "Interfaces", "React/CSS/HTML", "Proporciona la interfaz de usuario para la gestión financiera")
+    Component(application, "Application", "Java/NodeJS", "Contiene la lógica de negocio y coordina las operaciones entre los componentes")
+    Component(domain, "Domain", "KPIs, transacciones, categorías, metas", "Define las entidades y reglas de negocio para la gestión financiera")
+    Component(infrastructure, "Infrastructure", "APIs, NodeJs, etc.", "Proporciona servicios de infraestructura como acceso a la base de datos y comunicación con servicios externos")
+}
+
+Rel(spa, interfaces, "")
+Rel(interfaces, application, "")
+Rel(application, domain, "")
+Rel(application, infrastructure, "")
+Rel(infrastructure, db, "")
+@enduml

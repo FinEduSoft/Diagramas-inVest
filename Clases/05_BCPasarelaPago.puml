@@ -1,0 +1,49 @@
+@startuml BCPasarelaPago
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCPasarelaPago" {
+
+    package "AgregadoPago" {
+
+        class Pago <<RaizAgregado>> {
+            - PagoId id
+            - UsuarioId usuarioId
+            - TransaccionId transaccionId
+            - Dinero monto
+            - EstadoPago estado
+            - LocalDateTime creadoEn
+        }
+
+        class EstadoPago <<ObjetoValor>> {
+            - String valor
+            ' PENDIENTE | APROBADO | RECHAZADO
+        }
+
+        class DetallePago <<Entidad>> {
+            - DetallePagoId id
+            - PagoId pagoId
+            - String idTransaccionNiubiz
+            - String numeroTarjetaEnmascarado
+            - String codigoAutorizacion
+        }
+
+        class DetallePagoId <<ObjetoValor>> {
+            - Long valor
+        }
+    }
+
+    ' Relaciones internas del Bounded Context
+    Pago *-- EstadoPago
+    Pago "1" *-- "1" DetallePago : registra
+    DetallePago *-- DetallePagoId
+    Pago ..> UsuarioId : usa
+    Pago ..> TransaccionId : usa
+    Pago ..> Dinero : usa
+}
+
+@enduml

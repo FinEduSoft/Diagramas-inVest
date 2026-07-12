@@ -1,0 +1,46 @@
+@startuml BCNotificaciones
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCNotificaciones" {
+
+    package "AgregadoNotificacion" {
+
+        class Notificacion <<RaizAgregado>> {
+            - NotificacionId id
+            - UsuarioId usuarioId
+            - Correo correoDestinatario
+            - TipoNotificacion tipo
+            - String asunto
+            - String cuerpo
+            - EstadoNotificacion estado
+            - LocalDateTime enviadoEn
+        }
+
+        class NotificacionId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class TipoNotificacion <<ObjetoValor>> {
+            - String valor
+            ' INSCRIPCION | ALERTA_PRESUPUESTO | CONFIRMACION_PAGO | BIENVENIDA
+        }
+
+        class EstadoNotificacion <<ObjetoValor>> {
+            - String valor
+            ' PENDIENTE | ENVIADO | FALLIDO
+        }
+    }
+
+¿    Notificacion *-- NotificacionId
+    Notificacion *-- TipoNotificacion
+    Notificacion *-- EstadoNotificacion
+    Notificacion ..> UsuarioId : usa
+    Notificacion ..> Correo : usa
+}
+
+@enduml

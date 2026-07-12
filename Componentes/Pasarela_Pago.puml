@@ -1,0 +1,20 @@
+@startuml "Pasarela-de-Pago-Components"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title inVest - Pasarela de Pago Component Diagram
+
+Container(spa, "Single Page Application", "Frontend", "Permite a los usuarios registrar ingresos y gastos")
+System_Ext(Niubiz, "Pasarela de Pago (Niubiz)", "Servicio de procesamiento de pagos en línea")
+Container_Boundary(pasarela_bc, "Pasarela de Pago Bounded Context") {
+    Component(interfaces, "Interfaces", "React")
+    Component(application, "Application", "Java/NodeJS")
+    Component(domain, "Domain", "ID de pago, ID de transacción, monto, moneda, etc.")
+    Component(infrastructure, "Infrastructure", "APIs, NodeJs ,etc.")
+}
+
+Rel(spa, interfaces, "")
+Rel(interfaces, application, "")
+Rel(application, domain, "")
+Rel(application, infrastructure, "")
+Rel(infrastructure, Niubiz, "Procesa pagos mediante [HTTPS]")
+@enduml

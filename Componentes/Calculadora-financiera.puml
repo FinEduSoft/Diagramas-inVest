@@ -1,0 +1,23 @@
+@startuml "Calculadora-Components"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title inVest - Calculadora Component Diagram
+
+Container(spa, "Single Page Application", "Frontend", "Permite al usuario realizar el test de riesgo y simular inversiones")
+ContainerDb(db, "Database", "PostgreSQL/MySQL", "Almacena perfiles de inversión")
+System_Ext(market_api, "API Finanzas Externas", "Provee tasas de interés actualizadas")
+
+Container_Boundary(calc_bc, "Calculadora Financiera Bounded Context") {
+    Component(interfaces, "Interfaces", "React/CSS/HTML", "Proporciona la interfaz de usuario para la calculadora financiera")
+    Component(application, "Application", "Java/NodeJS", "Contiene la lógica de negocio y coordina las operaciones entre los componentes")
+    Component(domain, "Domain", "Formulas, indicadores, modelos", "Define las entidades y reglas de negocio para la calculadora financiera")
+    Component(infrastructure, "Infrastructure", "APIs, NodeJs, etc.", "Proporciona servicios de infraestructura como acceso a la base de datos y comunicación con servicios externos")
+}
+
+Rel(spa, interfaces, "")
+Rel(interfaces, application, "")
+Rel(application, domain, "")
+Rel(application, infrastructure, "")
+Rel(infrastructure, db, "")
+Rel(infrastructure, market_api, "")
+@enduml

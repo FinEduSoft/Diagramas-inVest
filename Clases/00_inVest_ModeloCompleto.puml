@@ -1,0 +1,110 @@
+@startuml inVest_ModeloDominio_Completo
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+skinparam packageFontSize 13
+skinparam linetype ortho
+
+title inVest - Modelo de Dominio Completo (DDD)
+
+' =====================================================
+' DEFINICIÓN DE BOUNDED CONTEXTS Y CLASES
+' (Reemplaza los includes asegurando que las clases existan)
+' =====================================================
+
+package "01_BCCompartido (Shared Kernel)" {
+    class UsuarioId <<ValueObject>>
+    class Dinero <<ValueObject>>
+    class TransaccionId <<ValueObject>>
+    class CursoId <<ValueObject>>
+    class PagoId <<ValueObject>>
+    class Correo <<ValueObject>>
+}
+
+package "07_BCIdentidad" {
+    class Usuario <<Entity>>
+}
+
+package "02_BCGestionFinanciera" {
+    class RegistroFinanciero <<Entity>>
+    class Transaccion <<Entity>>
+    class Meta <<Entity>>
+}
+
+package "03_BCCalculadoraFinanciera" {
+    class PerfilInversion <<Entity>>
+    class SimulacionInversion <<Entity>>
+}
+
+package "04_BCCursos" {
+    class Curso <<Entity>>
+    class Inscripcion <<Entity>>
+}
+
+package "05_BCPasarelaPago" {
+    class Pago <<Entity>>
+}
+
+package "06_BCNotificaciones" {
+    class Notificacion <<Entity>>
+}
+
+' =====================================================
+' RELACIONES CROSS-BOUNDED-CONTEXT
+' (cada BC consume tipos del Shared Kernel BCCompartido)
+' =====================================================
+
+' BCIdentidad -> BCCompartido
+Usuario *-- UsuarioId
+
+' BCGestionFinanciera -> BCCompartido
+RegistroFinanciero ..> UsuarioId : usa
+RegistroFinanciero ..> Dinero : usa
+Transaccion *-- TransaccionId
+Transaccion ..> UsuarioId : usa
+Transaccion ..> Dinero : usa
+Meta ..> UsuarioId : usa
+Meta ..> Dinero : usa
+
+' BCCalculadoraFinanciera -> BCCompartido
+PerfilInversion ..> UsuarioId : usa
+SimulacionInversion ..> Dinero : usa
+
+' BCCursos -> BCCompartido
+Curso *-- CursoId
+Curso ..> UsuarioId : administradorId
+Inscripcion ..> UsuarioId : usa
+Inscripcion ..> CursoId : usa
+
+' BCPasarelaPago -> BCCompartido
+Pago *-- PagoId
+Pago ..> UsuarioId : usa
+Pago ..> TransaccionId : usa
+Pago ..> Dinero : usa
+
+' BCNotificaciones -> BCCompartido
+Notificacion ..> UsuarioId : usa
+Notificacion ..> Correo : usa
+
+' =====================================================
+' RELACIONES ENTRE BOUNDED CONTEXTS (Context Mapping)
+' =====================================================
+
+' Pasarela de Pago confirma una transacción financiera (Customer-Supplier)
+Pago "1" --> "1" Transaccion : confirma >
+
+' Una inscripción a un curso puede generar un pago (Customer-Supplier)
+Inscripcion "1" --> "0..1" Pago : requiere >
+
+' Las notificaciones se disparan por eventos de otros BCs (Published Language / Eventos de Dominio)
+Notificacion "0..*" --> "1" Inscripcion : notifica evento de >
+Notificacion "0..*" --> "1" Pago : notifica evento de >
+Notificacion "0..*" --> "1" RegistroFinanciero : notifica evento de >
+
+' La calculadora financiera puede sugerir metas dentro de Gestión Financiera (Shared Kernel / ACL)
+SimulacionInversion "0..*" ..> Meta : sugiere >
+
+@enduml

@@ -1,0 +1,111 @@
+@startuml BCCursos
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCCursos" {
+
+    package "AgregadoCurso" {
+
+        class Curso <<RaizAgregado>> {
+            - CursoId id
+            - String titulo
+            - String descripcion
+            - String urlImagen
+            - EstadoCurso estado
+            - UsuarioId administradorId
+            - LocalDateTime creadoEn
+        }
+
+        class EstadoCurso <<ObjetoValor>> {
+            - String valor
+            ' BORRADOR | PUBLICADO | ARCHIVADO
+        }
+
+        class Modulo <<Entidad>> {
+            - ModuloId id
+            - CursoId cursoId
+            - String titulo
+            - Integer orden
+        }
+
+        class ModuloId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class Leccion <<Entidad>> {
+            - LeccionId id
+            - ModuloId moduloId
+            - String titulo
+            - String contenido
+            - Integer orden
+        }
+
+        class LeccionId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class RecursoBibliografico <<Entidad>> {
+            - RecursoId id
+            - LeccionId leccionId
+            - String urlExterna
+            - TipoRecurso tipo
+        }
+
+        class RecursoId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class TipoRecurso <<ObjetoValor>> {
+            - String valor
+            ' VIDEO | PDF
+        }
+    }
+
+    package "AgregadoInscripcion" {
+
+        class Inscripcion <<RaizAgregado>> {
+            - InscripcionId id
+            - UsuarioId usuarioId
+            - CursoId cursoId
+            - EstadoInscripcion estado
+            - LocalDateTime inscritoEn
+        }
+
+        class InscripcionId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class EstadoInscripcion <<ObjetoValor>> {
+            - String valor
+            ' ACTIVO | COMPLETADO | CANCELADO
+        }
+
+        class ProgresoLeccion <<Entidad>> {
+            - InscripcionId inscripcionId
+            - LeccionId leccionId
+            - Boolean completado
+            - LocalDateTime completadoEn
+        }
+    }
+
+    ' Relaciones internas del Bounded Context
+    Curso *-- EstadoCurso
+    Curso "1" *-- "1..*" Modulo : contiene
+    Modulo *-- ModuloId
+    Modulo "1" *-- "1..*" Leccion : contiene
+    Leccion *-- LeccionId
+    Leccion "1" *-- "0..*" RecursoBibliografico : referencia
+    RecursoBibliografico *-- TipoRecurso
+
+    Inscripcion *-- InscripcionId
+    Inscripcion *-- EstadoInscripcion
+    Inscripcion "1" *-- "1..*" ProgresoLeccion : registra
+    ProgresoLeccion ..> LeccionId : usa
+    Inscripcion ..> CursoId : usa
+}
+
+@enduml

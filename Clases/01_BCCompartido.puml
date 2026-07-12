@@ -1,0 +1,37 @@
+@startuml BCCompartido
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCCompartido" {
+
+    class UsuarioId <<ObjetoValor>> {
+        - Long valor
+    }
+
+    class CursoId <<ObjetoValor>> {
+        - Long valor
+    }
+
+    class TransaccionId <<ObjetoValor>> {
+        - Long valor
+    }
+
+    class PagoId <<ObjetoValor>> {
+        - Long valor
+    }
+
+    class Correo <<ObjetoValor>> {
+        - String valor
+    }
+
+    class Dinero <<ObjetoValor>> {
+        - BigDecimal monto
+        - String moneda
+    }
+}
+
+@enduml

@@ -1,0 +1,68 @@
+@startuml BCCalculadoraFinanciera
+
+skinparam packageStyle rectangle
+skinparam classAttributeIconSize 0
+skinparam classFontStyle bold
+skinparam classStereotypeFontSize 11
+skinparam packageFontStyle bold
+
+package "BCCalculadoraFinanciera" {
+
+    package "AgregadoSimulacion" {
+
+        class PerfilInversion <<RaizAgregado>> {
+            - PerfilInversionId id
+            - UsuarioId usuarioId
+            - NivelRiesgo nivelRiesgo
+            - LocalDateTime creadoEn
+        }
+
+        class PerfilInversionId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class NivelRiesgo <<ObjetoValor>> {
+            - String valor
+            ' CONSERVADOR | MODERADO | AGRESIVO
+        }
+
+        entity TestRiesgo <<Entidad>> {
+            - TestRiesgoId id
+            - PerfilInversionId perfilId
+            - Integer puntaje
+            - LocalDateTime fechaRealizacion
+        }
+
+        class TestRiesgoId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        entity SimulacionInversion <<Entidad>> {
+            - SimulacionId id
+            - PerfilInversionId perfilId
+            - Dinero montoInicial
+            - Double tasaInteres
+            - Integer plazoMeses
+            - Dinero montoProyectado
+        }
+
+        class SimulacionId <<ObjetoValor>> {
+            - Long valor
+        }
+
+        class TasaInteres <<ObjetoValor>> {
+            - Double valor
+            - LocalDate fechaActualizacion
+        }
+    }
+
+    PerfilInversion *-- PerfilInversionId
+    PerfilInversion *-- NivelRiesgo
+    PerfilInversion "1" *-- "1..*" TestRiesgo : registra
+    PerfilInversion "1" *-- "0..*" SimulacionInversion : genera
+    TestRiesgo *-- TestRiesgoId
+    SimulacionInversion *-- SimulacionId
+    SimulacionInversion ..> TasaInteres : usa
+}
+
+@enduml
