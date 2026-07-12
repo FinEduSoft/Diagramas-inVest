@@ -1,0 +1,34 @@
+@startuml "Bounded-context"
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+Container(spa, "Aplicacion de Página Única", "React", "Provee una experiencia de usuario fluida y rápida al cargar solo los componentes necesarios")
+ContainerDb(db, "Database", "PostgreSQL/MySQL", "Almacena informacion de importancia para el negocio")
+System_Ext(market_api, "API Finanzas Externas", "Provee tasas de interés actualizadas")
+System_Ext(repo, "Repositorio Bibliográfico", "Almacena videos y PDFs")
+System_Ext(Noti, "SendGrid", "Servicio de procesamiento de envio de notificaciones")
+System_Ext(Niubiz, "Pasarela de Pago (Niubiz)", "Servicio de procesamiento de pagos en línea")
+
+System_Boundary(system, "Aplicacion API") {
+    Container(Calculadora, "Calculadora Financiera", "Java/NodeJS", "Permite al usuario realizar el test de riesgo y simular inversiones")
+    Container(Cursos, "Cursos de Inversión", "Java/NodeJS", "Permite al usuario aprender sobre inversiones y finanzas personales")
+    Container(Gestion, "Gestión de Inversiones", "Java/NodeJS", "Permite al usuario gestionar sus inversiones y portafolios")
+    Container(Notificaciones, "Notificaciones", "Java/NodeJS", "Permite al usuario recibir notificaciones sobre sus inversiones y el mercado")
+    Container(Pasarela, "Pasarela de Pagos", "Java/NodeJS", "Permite al usuario realizar pagos y transacciones de manera segura")
+}
+
+Rel(spa, Calculadora, "Usa")
+Rel(spa, Cursos, "Usa")
+Rel(spa, Gestion, "Usa")
+Rel(spa, Notificaciones, "Usa")
+Rel(spa, Pasarela, "Usa")
+Rel(Calculadora, market_api, "Consulta tasas de interés mediante [HTTPS]")
+Rel(Cursos, repo, "Consulta videos y PDFs mediante [HTTPS]")
+Rel(Gestion, db, "Consulta información de transacciones mediante [HTTPS]")
+Rel(Notificaciones, Noti, "Envía notificaciones mediante [HTTPS]")
+Rel(Pasarela, Niubiz, "Procesa pagos mediante [HTTPS]")
+Rel(Calculadora, db, "Consulta información de transacciones mediante [HTTPS]")
+Rel(Cursos, db, "Consulta información de transacciones mediante [HTTPS]")
+Rel(Notificaciones, db, "Consulta información de transacciones mediante [HTTPS]")
+Rel(Pasarela, db, "Consulta información de transacciones mediante [HTTPS]")
+
+@enduml
