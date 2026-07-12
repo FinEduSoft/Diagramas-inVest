@@ -1,22 +1,32 @@
 @startuml
 title SUC05 - Generar Recomendaciones Personalizadas
 
+|Usuario|
+
 start
 
-if (¿Existen transacciones en la última semana?) then (Sí)
+if (¿Existen movimientos financieros de la última semana?) then (Sí)
 
-    :Generar reporte semanal;
-    :Mostrar estadísticas;
-    :Generar recomendaciones automáticas;
-    stop
+:Revisar la actividad financiera reciente;
+
+|Asesor financiero|
+
+:Analizar los hábitos financieros;
+:Identificar oportunidades de mejora;
+:Proponer recomendaciones personalizadas;
+
+|Usuario|
+
+:Revisar las recomendaciones;
+:Aplicar las recomendaciones en la planificación financiera;
+
+stop
 
 else (No)
 
-    :Mostrar pantalla vacía;
-    :Mostrar mensaje:
-    "Aún no tienes movimientos registrados
-    esta semana para generar analíticas";
-    stop
+:Registrar nuevos movimientos financieros;
+
+stop
 
 endif
 

@@ -1,34 +1,34 @@
 @startuml
 title SUC03 - Impartir Educación Financiera Gamificada
 
+|Administrador|
+
 start
 
-partition Administrador {
-    :Gestionar contenido del curso;
-    :Publicar nuevas lecciones;
-    :Actualizar temario;
-}
+:Gestionar contenido educativo;
+:Publicar nuevas lecciones;
+:Organizar el temario;
 
-partition Usuario {
+|Usuario|
 
-    :Visualizar módulos disponibles;
+:Seleccionar curso;
+:Estudiar el contenido;
+:Resolver evaluación temática;
 
-    :Estudiar contenido;
+if (¿Aprueba la evaluación?) then (Sí)
 
-    :Rendir cuestionario;
+:Recibir insignia de logro;
+:Continuar con el siguiente módulo;
 
-    if (¿Aprueba evaluación?) then (Sí)
-        :Otorgar insignia digital;
-        :Actualizar racha;
-        :Visualizar historial de insignias;
-        stop
+stop
 
-    else (No)
-        :Bloquear siguiente módulo;
-        :Mostrar puntuación;
-        :Invitar a repasar lecciones;
-        stop
-    endif
-}
+else (No)
+
+:Repasar el contenido del módulo;
+:Resolver nuevamente la evaluación;
+
+stop
+
+endif
 
 @enduml

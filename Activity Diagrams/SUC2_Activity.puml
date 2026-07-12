@@ -1,26 +1,34 @@
 @startuml
 title SUC02 - Planificar Metas de Ahorro
 
+|Usuario|
+
 start
 
-:Crear meta de ahorro;
-:Ingresar nombre;
-:Ingresar monto objetivo;
-:Ingresar fecha límite;
+:Definir objetivo de ahorro;
+:Establecer monto objetivo;
+:Establecer fecha límite;
 
-:Registrar aporte;
+:Realizar aporte;
 
-if (¿Monto > 0?) then (Sí)
-    :Actualizar fondo de ahorro;
-    :Evaluar continuidad del ahorro;
-    :Otorgar medalla por racha;
-    :Mostrar barra de progreso;
-    stop
+if (¿El aporte es mayor que cero?) then (Sí)
+
+:Contribuir al cumplimiento de la meta;
+
+if (¿Mantiene la constancia del ahorro?) then (Sí)
+:Recibir reconocimiento por constancia;
+endif
+
+:Revisar el avance hacia la meta;
+
+stop
 
 else (No)
-    :Bloquear botón de envío;
-    :Mostrar "El monto del aporte debe ser mayor a cero";
-    stop
+
+:Corregir el monto del aporte;
+
+stop
+
 endif
 
 @enduml

@@ -1,35 +1,27 @@
 @startuml
 title SUC01 - Gestionar Flujo de Caja y Billeteras Multi-moneda
 
+|Usuario|
+
 start
 
-:Ingresar credenciales;
+:Crear una billetera;
+:Definir el nombre de la cuenta;
+:Seleccionar la divisa;
 
-if (¿Credenciales correctas?) then (Sí)
-    :Crear billetera;
-    :Ingresar nombre de la cuenta;
-    :Seleccionar tipo de divisa;
+:Registrar un ingreso o un gasto;
+:Indicar el monto;
 
-    :Registrar movimiento;
-    :Elegir tipo (Ingreso/Gasto);
-    :Ingresar monto;
-
-    if (¿Desea asignar categoría?) then (Sí)
-        :Seleccionar categoría;
-    endif
-
-    if (¿Desea modificar o eliminar una transacción?) then (Sí)
-        :Modificar o eliminar transacción;
-    endif
-
-    :Visualizar balance consolidado multimoneda;
-
-    stop
-
-else (No)
-    :Mostrar "Usuario o contraseña incorrectos";
-    :Limpiar campos de texto;
-    stop
+if (¿Desea clasificar el movimiento?) then (Sí)
+:Asignar una categoría;
 endif
+
+if (¿Desea corregir un movimiento?) then (Sí)
+:Modificar o eliminar la transacción;
+endif
+
+:Revisar el balance de sus billeteras;
+
+stop
 
 @enduml
