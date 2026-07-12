@@ -1,0 +1,43 @@
+@startuml inVest_DeploymentDiagram
+!theme plain
+
+skinparam backgroundColor #FEFEFE
+skinparam arrowColor #333333
+skinparam nodeBackgroundColor #E1F5FF
+skinparam nodeBorderColor #01579B
+
+title Diagrama de Despliegue
+
+node "Cliente Web" as ClientNode {
+    component "Navegador Web" as Browser
+}
+
+node "Servidor de Aplicación" as AppServer {
+    component "Node.js\nRuntime Environment" as NodeRuntime
+    component "Express API\nServer" as ExpressAPI
+    component "Controladores de\nNegocio" as BusinessLogic
+    component "Middleware de\nAutenticación JWT" as AuthMiddleware
+    component "Servicio de\nNotificaciones Push" as NotificationService
+    component "Motor de\nGeneración PDF" as PDFEngine
+}
+
+node "Servicios Externos" as ExternalServices {
+    component "Google OAuth 2.0\n(Autenticación Segura)" as GoogleOAuth
+}
+
+node "Base de Datos Local" as DatabaseNode {
+    database "SQLite\n(Datos de Usuario, Transacciones,\nCursos, Metas, Billeteras)" as SQLite
+}
+
+ClientNode --> AppServer : HTTPS\nRequests/Responses
+AppServer --> DatabaseNode : SQL Queries
+AppServer --> ExternalServices : API Calls
+ExternalServices --> AppServer : Callbacks\nEmail/Push
+
+NodeRuntime --> ExpressAPI : Contiene
+ExpressAPI --> AuthMiddleware : Utiliza
+AuthMiddleware --> BusinessLogic : Valida
+BusinessLogic --> NotificationService : Invoca
+BusinessLogic --> PDFEngine : Genera Reportes
+
+@enduml
